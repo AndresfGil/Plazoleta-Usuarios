@@ -1,0 +1,26 @@
+server:
+  port: 8080
+  error:
+    include-message: always
+    include-binding-errors: never
+    include-stacktrace: never
+    include-exception: false
+
+spring:
+  datasource:
+    url: jdbc:mysql://localhost:3306/plazoleta-usuarios
+    username: root
+    password: andres98
+
+  jpa:
+    hibernate:
+      ddl-auto: update
+    show-sql: true
+    defer-datasource-initialization: true
+  
+  sql:
+    init:
+      mode: always
+
+appDescription: "Microservicio de gestión de usuarios para Plaza de Comidas"
+appVersion: "1.0.0"
