@@ -1,6 +1,7 @@
 package com.pragma.powerup.infrastructure.input.rest;
 
 import com.pragma.powerup.application.dto.request.UsuarioRequestDto;
+import com.pragma.powerup.application.dto.response.UsuarioResponseDto;
 import com.pragma.powerup.application.handler.IUsuarioHandler;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.media.Content;
@@ -34,7 +35,25 @@ public class UsuarioRestController {
     @ApiResponses(value = {
             @ApiResponse(
                     responseCode = "201",
-                    description = "Usuario creado exitosamente"
+                    description = "Usuario creado exitosamente",
+                    content = @Content(
+                            mediaType = "application/json",
+                            schema = @Schema(implementation = UsuarioResponseDto.class),
+                            examples = @ExampleObject(
+                                    name = "Usuario creado",
+                                    value = "{\n" +
+                                            "  \"id\": 1,\n" +
+                                            "  \"nombre\": \"Juan\",\n" +
+                                            "  \"apellido\": \"Pérez\",\n" +
+                                            "  \"documentoIdentidad\": 12345678,\n" +
+                                            "  \"celular\": \"+573001234567\",\n" +
+                                            "  \"fechaNacimiento\": \"1995-01-15\",\n" +
+                                            "  \"correo\": \"juan.perez@example.com\",\n" +
+                                            "  \"idRol\": 4,\n" +
+                                            "  \"activo\": true\n" +
+                                            "}"
+                            )
+                    )
             ),
             @ApiResponse(
                     responseCode = "400",
@@ -58,8 +77,8 @@ public class UsuarioRestController {
                     )
             )
     })
-    @PostMapping()
-    public ResponseEntity<Void> guardarUsuario(
+            @PostMapping()
+            public ResponseEntity<UsuarioResponseDto> guardarUsuario(
             @io.swagger.v3.oas.annotations.parameters.RequestBody(
                     description = "Datos del usuario a crear",
                     required = true,
@@ -82,8 +101,8 @@ public class UsuarioRestController {
                             )
                     )
             )
-            @Valid @RequestBody UsuarioRequestDto usuarioRequestDto) {
-        usuarioHandler.guardarUsuario(usuarioRequestDto);
-        return new ResponseEntity<>(HttpStatus.CREATED);
-    }
+                    @Valid @RequestBody UsuarioRequestDto usuarioRequestDto) {
+                UsuarioResponseDto usuarioResponse = usuarioHandler.guardarUsuario(usuarioRequestDto);
+                return new ResponseEntity<>(usuarioResponse, HttpStatus.CREATED);
+            }
 }

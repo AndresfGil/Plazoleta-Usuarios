@@ -19,3 +19,4 @@ public class TestSecurityConfiguration {
         return NoOpPasswordEncoder.getInstance(); // Sin encriptación para tests
     }
 }
+

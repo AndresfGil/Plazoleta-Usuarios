@@ -21,7 +21,7 @@ public class UsuarioUseCase implements IUsuarioServicePort {
     }
 
     @Override
-    public void guardarUsuario(Usuario usuario) {
+    public Usuario guardarUsuario(Usuario usuario) {
         // Validar que el usuario sea mayor de edad
         validarMayorDeEdad(usuario.getFechaNacimiento());
 
@@ -32,8 +32,8 @@ public class UsuarioUseCase implements IUsuarioServicePort {
         // Establecer el usuario como activo
         usuario.setActivo(true);
         
-        // Guardar el usuario
-        usuarioPersistencePort.guardarUsuario(usuario);
+        // Guardar el usuario y retornarlo
+        return usuarioPersistencePort.guardarUsuario(usuario);
     }
 
 

@@ -25,3 +25,4 @@ logging:
   level:
     org.springframework.web: WARN
     org.hibernate: WARN
+

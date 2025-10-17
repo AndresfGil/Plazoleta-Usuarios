@@ -70,3 +70,4 @@ class PasswordEncoderAdapterTest {
         verify(passwordEncoder, times(1)).encode(passwordPlano);
     }
 }
+
