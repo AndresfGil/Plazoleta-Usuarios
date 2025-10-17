@@ -18,7 +18,7 @@ public interface IUsuarioEntityMapper {
     @Mapping(target = "rol", expression = "java(createRolEntity(usuario.getIdRol()))")
     UsuarioEntity toEntity(Usuario usuario);
     
-    /**
+    /**`
      * Convierte UsuarioEntity de persistencia a Usuario del dominio
      */
     @Mapping(target = "idRol", source = "rol.id")

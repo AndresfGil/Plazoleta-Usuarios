@@ -26,5 +26,11 @@ public class UsuarioHandler implements IUsuarioHandler {
         Usuario usuarioGuardado = usuarioServicePort.guardarUsuario(usuario);
         return usuarioResponseMapper.toResponse(usuarioGuardado);
     }
+
+    @Override
+    public UsuarioResponseDto obtenerUsuarioPorId(Long id) {
+        Usuario usuario = usuarioServicePort.obtenerUsuarioPorId(id);
+        return usuarioResponseMapper.toResponse(usuario);
+    }
 }
 

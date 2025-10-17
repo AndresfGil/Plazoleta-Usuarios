@@ -18,10 +18,12 @@ import org.springframework.test.web.servlet.MockMvc;
 import java.util.Calendar;
 
 import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.ArgumentMatchers.anyLong;
 import static org.mockito.ArgumentMatchers.anyString;
 import static org.mockito.Mockito.when;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 
 
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
@@ -53,6 +55,51 @@ class UsuarioRestControllerIntegrationTest {
                 .contentType(MediaType.APPLICATION_JSON)
                 .content(objectMapper.writeValueAsString(request)))
                 .andExpect(status().isCreated());
+    }
+
+    @Test
+    void obtenerUsuarioPorId_cuandoUsuarioExiste_debeRetornar200() throws Exception {
+        Usuario usuario = crearUsuarioValido();
+        
+        when(usuarioPersistencePort.obtenerUsuarioPorId(1L)).thenReturn(usuario);
+
+        mockMvc.perform(get("/api/v1/usuario/1"))
+                .andExpect(status().isOk())
+                .andExpect(content().contentType(MediaType.APPLICATION_JSON))
+                .andExpect(jsonPath("$.id").value(1))
+                .andExpect(jsonPath("$.nombre").value("Juan"))
+                .andExpect(jsonPath("$.apellido").value("Pérez"))
+                .andExpect(jsonPath("$.idRol").value(4))
+                .andExpect(jsonPath("$.activo").value(true));
+    }
+
+    @Test
+    void obtenerUsuarioPorId_cuandoUsuarioNoExiste_debeRetornar404() throws Exception {
+        when(usuarioPersistencePort.obtenerUsuarioPorId(999L))
+                .thenThrow(new RuntimeException("Usuario no encontrado con ID: 999"));
+
+        mockMvc.perform(get("/api/v1/usuario/999"))
+                .andExpect(status().isInternalServerError());
+    }
+
+    @Test
+    void obtenerUsuarioPorId_cuandoUsuarioEsPropietario_debeRetornarDatosCompletos() throws Exception {
+        Usuario usuarioPropietario = crearUsuarioValido();
+        usuarioPropietario.setId(2L);
+        usuarioPropietario.setIdRol(2L);
+        usuarioPropietario.setNombre("María");
+        usuarioPropietario.setApellido("García");
+        
+        when(usuarioPersistencePort.obtenerUsuarioPorId(2L)).thenReturn(usuarioPropietario);
+
+        mockMvc.perform(get("/api/v1/usuario/2"))
+                .andExpect(status().isOk())
+                .andExpect(content().contentType(MediaType.APPLICATION_JSON))
+                .andExpect(jsonPath("$.id").value(2))
+                .andExpect(jsonPath("$.nombre").value("María"))
+                .andExpect(jsonPath("$.apellido").value("García"))
+                .andExpect(jsonPath("$.idRol").value(2))
+                .andExpect(jsonPath("$.activo").value(true));
     }
 
     private UsuarioRequestDto crearUsuarioRequestValido() {

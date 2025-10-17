@@ -7,5 +7,6 @@ public interface IUsuarioHandler {
 
     UsuarioResponseDto guardarUsuario(UsuarioRequestDto usuarioRequestDto);
     
+    UsuarioResponseDto obtenerUsuarioPorId(Long id);
 }
 

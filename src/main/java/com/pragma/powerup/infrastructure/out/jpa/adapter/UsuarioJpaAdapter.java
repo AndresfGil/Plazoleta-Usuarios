@@ -1,5 +1,6 @@
 package com.pragma.powerup.infrastructure.out.jpa.adapter;
 
+import com.pragma.powerup.domain.exception.UsuarioNoEncontradoException;
 import com.pragma.powerup.domain.model.Usuario;
 import com.pragma.powerup.domain.spi.IUsuarioPersistencePort;
 import com.pragma.powerup.infrastructure.out.jpa.entity.UsuarioEntity;
@@ -17,6 +18,15 @@ public class UsuarioJpaAdapter implements IUsuarioPersistencePort {
     public Usuario guardarUsuario(Usuario usuario) {
         UsuarioEntity usuarioEntity = usuarioRepository.save(usuarioEntityMapper.toEntity(usuario));
         return usuarioEntityMapper.toUsuario(usuarioEntity);
+    }
+
+    @Override
+    public Usuario obtenerUsuarioPorId(Long id) {
+        UsuarioEntity usuarioEntity = usuarioRepository.findById(id)
+                .orElseThrow(() -> new UsuarioNoEncontradoException("Usuario no encontrado con ID: " + id));
+        
+        Usuario usuario = usuarioEntityMapper.toUsuario(usuarioEntity);
+        return usuario;
     }
 }
 

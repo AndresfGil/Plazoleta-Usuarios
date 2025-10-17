@@ -29,11 +29,15 @@ public class UsuarioUseCase implements IUsuarioServicePort {
         String claveEncriptada = passwordEncoderPort.encode(usuario.getClave());
         usuario.setClave(claveEncriptada);
 
-        // Establecer el usuario como activo
         usuario.setActivo(true);
         
         // Guardar el usuario y retornarlo
         return usuarioPersistencePort.guardarUsuario(usuario);
+    }
+
+    @Override
+    public Usuario obtenerUsuarioPorId(Long id) {
+        return usuarioPersistencePort.obtenerUsuarioPorId(id);
     }
 
 

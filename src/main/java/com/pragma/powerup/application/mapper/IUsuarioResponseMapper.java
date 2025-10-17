@@ -7,9 +7,6 @@ import org.mapstruct.ReportingPolicy;
 
 import java.util.List;
 
-/**
- * Mapper para convertir Usuario del dominio a UsuarioResponseDto
- */
 @Mapper(componentModel = "spring",
         unmappedTargetPolicy = ReportingPolicy.IGNORE,
         unmappedSourcePolicy = ReportingPolicy.IGNORE)

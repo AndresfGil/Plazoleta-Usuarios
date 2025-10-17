@@ -17,9 +17,6 @@ import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
 
-/**
- * Controlador REST para operaciones de Usuario
- */
 @RestController
 @RequestMapping("/api/v1/usuario")
 @RequiredArgsConstructor
@@ -105,4 +102,32 @@ public class UsuarioRestController {
                 UsuarioResponseDto usuarioResponse = usuarioHandler.guardarUsuario(usuarioRequestDto);
                 return new ResponseEntity<>(usuarioResponse, HttpStatus.CREATED);
             }
+
+    @Operation(
+            summary = "Obtener usuario por ID",
+            description = "Consulta un usuario específico por su identificador único."
+    )
+    @ApiResponses(value = {
+            @ApiResponse(
+                    responseCode = "200",
+                    description = "Usuario encontrado exitosamente",
+                    content = @Content(
+                            mediaType = "application/json",
+                            schema = @Schema(implementation = UsuarioResponseDto.class)
+                    )
+            ),
+            @ApiResponse(
+                    responseCode = "404",
+                    description = "Usuario no encontrado",
+                    content = @Content(
+                            mediaType = "application/json",
+                            examples = @ExampleObject(value = "{\"message\": \"Usuario no encontrado con ID: 1\"}")
+                    )
+            )
+    })
+    @GetMapping("/{id}")
+    public ResponseEntity<UsuarioResponseDto> obtenerUsuarioPorId(@PathVariable Long id) {
+        UsuarioResponseDto usuarioResponse = usuarioHandler.obtenerUsuarioPorId(id);
+        return new ResponseEntity<>(usuarioResponse, HttpStatus.OK);
+    }
 }
