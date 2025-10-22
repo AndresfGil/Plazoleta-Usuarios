@@ -9,6 +9,7 @@ import io.swagger.v3.oas.annotations.media.ExampleObject;
 import io.swagger.v3.oas.annotations.media.Schema;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
+import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
@@ -27,7 +28,12 @@ public class UsuarioRestController {
 
     @Operation(
             summary = "Crear un nuevo usuario",
-            description = "Registra un nuevo usuario en el sistema. El usuario debe ser mayor de 18 años y se creará con estado activo por defecto."
+            description = "Registra un nuevo usuario en el sistema. El usuario debe ser mayor de 18 años y se creará con estado activo por defecto. " +
+                    "Requiere autenticación JWT y autorización según el rol del usuario que se está creando: " +
+                    "• ADMINISTRADOR: Solo puede crear PROPIETARIOS y otros ADMINISTRADORES " +
+                    "• PROPIETARIO: Solo puede crear EMPLEADOS " +
+                    "• EMPLEADO/CLIENTE: No pueden crear usuarios",
+            security = @SecurityRequirement(name = "bearerAuth")
     )
     @ApiResponses(value = {
             @ApiResponse(
@@ -72,6 +78,34 @@ public class UsuarioRestController {
                                     )
                             }
                     )
+            ),
+            @ApiResponse(
+                    responseCode = "401",
+                    description = "No autorizado - Token JWT inválido o faltante",
+                    content = @Content(
+                            mediaType = "application/json",
+                            examples = @ExampleObject(
+                                    name = "Token inválido",
+                                    value = "{\"message\": \"Token JWT inválido o faltante. Inicie sesión para acceder a este recurso.\"}"
+                            )
+                    )
+            ),
+            @ApiResponse(
+                    responseCode = "403",
+                    description = "Prohibido - Sin permisos para crear este tipo de usuario",
+                    content = @Content(
+                            mediaType = "application/json",
+                            examples = {
+                                    @ExampleObject(
+                                            name = "Sin permisos para crear propietario",
+                                            value = "{\"message\": \"Solo los administradores pueden crear usuarios propietarios\"}"
+                                    ),
+                                    @ExampleObject(
+                                            name = "Sin permisos para crear empleado",
+                                            value = "{\"message\": \"Solo los propietarios pueden crear usuarios empleados\"}"
+                                    )
+                            }
+                    )
             )
     })
             @PostMapping()
@@ -105,7 +139,8 @@ public class UsuarioRestController {
 
     @Operation(
             summary = "Obtener usuario por ID",
-            description = "Consulta un usuario específico por su identificador único."
+            description = "Consulta un usuario específico por su identificador único. Requiere autenticación JWT y rol de ADMINISTRADOR.",
+            security = @SecurityRequirement(name = "bearerAuth")
     )
     @ApiResponses(value = {
             @ApiResponse(
@@ -114,6 +149,28 @@ public class UsuarioRestController {
                     content = @Content(
                             mediaType = "application/json",
                             schema = @Schema(implementation = UsuarioResponseDto.class)
+                    )
+            ),
+            @ApiResponse(
+                    responseCode = "401",
+                    description = "No autorizado - Token JWT inválido o faltante",
+                    content = @Content(
+                            mediaType = "application/json",
+                            examples = @ExampleObject(
+                                    name = "Token inválido",
+                                    value = "{\"message\": \"Token JWT inválido o faltante. Inicie sesión para acceder a este recurso.\"}"
+                            )
+                    )
+            ),
+            @ApiResponse(
+                    responseCode = "403",
+                    description = "Prohibido - Sin permisos de administrador",
+                    content = @Content(
+                            mediaType = "application/json",
+                            examples = @ExampleObject(
+                                    name = "Sin permisos",
+                                    value = "{\"message\": \"Acceso denegado. Se requiere rol de administrador.\"}"
+                            )
                     )
             ),
             @ApiResponse(

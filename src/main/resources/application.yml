@@ -24,3 +24,7 @@ spring:
 
 appDescription: "Microservicio de gestión de usuarios para Plaza de Comidas"
 appVersion: "1.0.0"
+
+jwt:
+  secret: "zW4nF8kP2rT7vX1yL9hG5bC3jM6qS0dE8oV1wA4iU7zW4nF8kP2rT7vX1yL9hG5b"
+  expiration: 3600000
