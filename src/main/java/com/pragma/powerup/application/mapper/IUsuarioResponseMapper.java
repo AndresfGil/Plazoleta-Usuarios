@@ -5,7 +5,6 @@ import com.pragma.powerup.domain.model.Usuario;
 import org.mapstruct.Mapper;
 import org.mapstruct.ReportingPolicy;
 
-import java.util.List;
 
 @Mapper(componentModel = "spring",
         unmappedTargetPolicy = ReportingPolicy.IGNORE,
@@ -13,7 +12,6 @@ import java.util.List;
 public interface IUsuarioResponseMapper {
     
     UsuarioResponseDto toResponse(Usuario usuario);
-    
-    List<UsuarioResponseDto> toResponseList(List<Usuario> usuarioList);
+
 }
 

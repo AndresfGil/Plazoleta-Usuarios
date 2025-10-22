@@ -11,22 +11,13 @@ import org.mapstruct.ReportingPolicy;
         unmappedTargetPolicy = ReportingPolicy.IGNORE,
         unmappedSourcePolicy = ReportingPolicy.IGNORE)
 public interface IUsuarioEntityMapper {
-    
-    /**
-     * Convierte Usuario del dominio a UsuarioEntity de persistencia
-     */
+
     @Mapping(target = "rol", expression = "java(createRolEntity(usuario.getIdRol()))")
     UsuarioEntity toEntity(Usuario usuario);
-    
-    /**`
-     * Convierte UsuarioEntity de persistencia a Usuario del dominio
-     */
+
     @Mapping(target = "idRol", source = "rol.id")
     Usuario toUsuario(UsuarioEntity usuarioEntity);
-    
-    /**
-     * Crea una entidad de Rol solo con el ID
-     */
+
     default RolEntity createRolEntity(Long idRol) {
         if (idRol == null) {
             return null;

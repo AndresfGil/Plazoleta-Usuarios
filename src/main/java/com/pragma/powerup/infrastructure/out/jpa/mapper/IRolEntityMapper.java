@@ -9,15 +9,9 @@ import org.mapstruct.ReportingPolicy;
         unmappedTargetPolicy = ReportingPolicy.IGNORE,
         unmappedSourcePolicy = ReportingPolicy.IGNORE)
 public interface IRolEntityMapper {
-    
-    /**
-     * Convierte Rol del dominio a RolEntity de persistencia
-     */
+
     RolEntity toEntity(Rol rol);
-    
-    /**
-     * Convierte RolEntity de persistencia a Rol del dominio
-     */
+
     Rol toRol(RolEntity rolEntity);
 }
 

@@ -1,5 +1,6 @@
 package com.pragma.powerup.application.dto.request;
 
+import com.pragma.powerup.application.validation.MayorDeEdad;
 import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.Getter;
 import lombok.Setter;
@@ -30,6 +31,7 @@ public class UsuarioRequestDto {
     private String celular;
     
     @NotNull(message = "La fecha de nacimiento es obligatoria")
+    @MayorDeEdad(message = "El usuario debe ser mayor de 18 años")
     @Schema(description = "Fecha de nacimiento del usuario (debe ser mayor de 18 años)", 
             example = "1995-01-15", 
             type = "string", 

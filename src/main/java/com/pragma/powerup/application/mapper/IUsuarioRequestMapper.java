@@ -6,14 +6,11 @@ import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
 import org.mapstruct.ReportingPolicy;
 
-/**
- * Mapper para convertir UsuarioRequestDto a Usuario del dominio
- */
+
 @Mapper(componentModel = "spring",
         unmappedTargetPolicy = ReportingPolicy.IGNORE,
         unmappedSourcePolicy = ReportingPolicy.IGNORE)
 public interface IUsuarioRequestMapper {
-    
     @Mapping(target = "id", ignore = true)
     @Mapping(target = "activo", ignore = true)
     Usuario toUsuario(UsuarioRequestDto usuarioRequestDto);

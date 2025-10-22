@@ -28,5 +28,14 @@ public class UsuarioJpaAdapter implements IUsuarioPersistencePort {
         Usuario usuario = usuarioEntityMapper.toUsuario(usuarioEntity);
         return usuario;
     }
+
+    @Override
+    public Usuario obtenerUsuarioPorCorreo(String correo) {
+        UsuarioEntity usuarioEntity = usuarioRepository.findByCorreo(correo);
+        if (usuarioEntity == null) {
+            return null;
+        }
+        return usuarioEntityMapper.toUsuario(usuarioEntity);
+    }
 }
 
