@@ -6,4 +6,5 @@ import com.pragma.powerup.application.dto.response.LoginResponseDto;
 public interface IAuthServicePort {
 
     LoginResponseDto login(LoginRequestDto loginRequestDto);
+
 }

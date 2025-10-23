@@ -1,7 +1,11 @@
 package com.pragma.powerup.infrastructure.input.rest;
 
 import com.pragma.powerup.application.dto.request.LoginRequestDto;
+import com.pragma.powerup.application.dto.request.RegistroClienteRequestDto;
+import com.pragma.powerup.application.dto.request.UsuarioRequestDto;
 import com.pragma.powerup.application.dto.response.LoginResponseDto;
+import com.pragma.powerup.application.dto.response.UsuarioResponseDto;
+import com.pragma.powerup.application.handler.IUsuarioHandler;
 import com.pragma.powerup.domain.api.IAuthServicePort;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;
@@ -19,6 +23,8 @@ import javax.validation.Valid;
 public class AuthRestController {
 
     private final IAuthServicePort authServicePort;
+    private final IUsuarioHandler usuarioHandler;
+
 
     @PostMapping("/login")
     public ResponseEntity<LoginResponseDto> login(@Valid @RequestBody LoginRequestDto loginRequestDto) {
@@ -29,4 +35,15 @@ public class AuthRestController {
             return new ResponseEntity<>(HttpStatus.UNAUTHORIZED);
         }
     }
+
+    @PostMapping("/registro")
+    public ResponseEntity<UsuarioResponseDto> registro(
+            @Valid @RequestBody RegistroClienteRequestDto registroClienteRequestDto) {
+
+        UsuarioResponseDto usuarioResponse = usuarioHandler.registrarUsuario(registroClienteRequestDto);
+        return new ResponseEntity<>(usuarioResponse, HttpStatus.CREATED);
+    }
+
+
+
 }

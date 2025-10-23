@@ -137,6 +137,7 @@ public class UsuarioRestController {
                 return new ResponseEntity<>(usuarioResponse, HttpStatus.CREATED);
             }
 
+
     @Operation(
             summary = "Obtener usuario por ID",
             description = "Consulta un usuario específico por su identificador único. Requiere autenticación JWT y rol de ADMINISTRADOR.",
@@ -182,6 +183,8 @@ public class UsuarioRestController {
                     )
             )
     })
+
+
     @GetMapping("/{id}")
     public ResponseEntity<UsuarioResponseDto> obtenerUsuarioPorId(@PathVariable Long id) {
         UsuarioResponseDto usuarioResponse = usuarioHandler.obtenerUsuarioPorId(id);

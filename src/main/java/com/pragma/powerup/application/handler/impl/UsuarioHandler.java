@@ -1,8 +1,10 @@
 package com.pragma.powerup.application.handler.impl;
 
+import com.pragma.powerup.application.dto.request.RegistroClienteRequestDto;
 import com.pragma.powerup.application.dto.request.UsuarioRequestDto;
 import com.pragma.powerup.application.dto.response.UsuarioResponseDto;
 import com.pragma.powerup.application.handler.IUsuarioHandler;
+import com.pragma.powerup.application.mapper.IRegistroClienteRequestMapper;
 import com.pragma.powerup.application.mapper.IUsuarioRequestMapper;
 import com.pragma.powerup.application.mapper.IUsuarioResponseMapper;
 import com.pragma.powerup.domain.api.IUsuarioServicePort;
@@ -22,6 +24,7 @@ import org.springframework.transaction.annotation.Transactional;
 public class UsuarioHandler implements IUsuarioHandler {
 
     private final IUsuarioServicePort usuarioServicePort;
+    private final IRegistroClienteRequestMapper registroClienteRequestMapper;
     private final IUsuarioRequestMapper usuarioRequestMapper;
     private final IUsuarioResponseMapper usuarioResponseMapper;
 
@@ -30,6 +33,14 @@ public class UsuarioHandler implements IUsuarioHandler {
         validarAutorizacionParaCrearUsuario(usuarioRequestDto.getIdRol());
         
         Usuario usuario = usuarioRequestMapper.toUsuario(usuarioRequestDto);
+        Usuario usuarioGuardado = usuarioServicePort.guardarUsuario(usuario);
+        return usuarioResponseMapper.toResponse(usuarioGuardado);
+    }
+
+    @Override
+    public UsuarioResponseDto registrarUsuario(RegistroClienteRequestDto usuarioRequestDto) {
+        Usuario usuario = registroClienteRequestMapper.toRegistroCliente(usuarioRequestDto);
+        usuario.setIdRol(4L);
         Usuario usuarioGuardado = usuarioServicePort.guardarUsuario(usuario);
         return usuarioResponseMapper.toResponse(usuarioGuardado);
     }
