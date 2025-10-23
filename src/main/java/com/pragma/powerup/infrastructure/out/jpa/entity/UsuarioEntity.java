@@ -33,7 +33,7 @@ public class UsuarioEntity {
     @Column(name = "celular", nullable = false, length = 13)
     private String celular;
     
-    @Column(name = "fecha_nacimiento", nullable = false)
+    @Column(name = "fecha_nacimiento", nullable = true)
     @Temporal(TemporalType.DATE)
     private Date fechaNacimiento;
     
